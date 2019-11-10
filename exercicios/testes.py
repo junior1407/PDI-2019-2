@@ -8,10 +8,12 @@ import numpy as np
 
 
 def calcMean(data, prob):
+    #prob = calcProbabilityArray(data)
     mean = 0
     for i in range(256):
         mean = mean + i*prob[i]
     return mean 
+
 
 def getNeighbordhoodData(data,size, neigh_no):
     height,width = img.shape[:2] 
@@ -23,12 +25,23 @@ def getNeighbordhoodData(data,size, neigh_no):
     return data2
 
 def getwindowNo(data,size, x, y):
+    
     height,width = data.shape[:2] 
+    #many_by_line = width/size
+    #return int( (x//many_by_line)*many_by_line + (y//size))    
     col = y//size
     line = x//size
     cabe_numa_linha = width //size
     qnts_antes = line * cabe_numa_linha
+    
+    #print(col,line, cabe_numa_linha, qnts_antes)
     return qnts_antes + line
+
+#def calcMeanNeighborhood(data,size, center_no): #Center_no starts at 1
+#    return calcMean(getNeighbordhoodData(data,size, center_no))
+
+#def calcSDNeighborhood(data,size, center_no):
+#    return calcSD(getNeighbordhoodData(data,size, center_no))
 
 def calcProbabilityArray(data):
     height,width = img.shape[:2]
@@ -74,16 +87,22 @@ def equalizePixel(x,y, data, size):
         return C * data[x][y]
     return data[x][y]
     
+def checkCondition(k0,k1,k2,k3 m_g, mean_sxy, ):
+    return (k0 * m_g <= mean_sxy and
+           mean_sxy<=k1*m_g and
+            k2*sd_g<=sdLib[windowNo] and
+            sdLib[windowNo]<=k3*sd_g) 
+    
 
-N = 7 #Neighborhood size
+N = 5 #Neighborhood size
 
-imgfile = '../db/kidney.tif'
-img= cv2.imread(imgfile, cv2.IMREAD_GRAYSCALE)
+imgfile = '../db/squares_noisy.tif'
+img= cv2.imread(imgfile, 0)
 height,width = img.shape[:2]
 
 height = (height//N)*N
-width = (width//N)*N
-img = cv2.resize(img,(width, height ))   
+width = (height//N)*N
+img = cv2.resize(img,(height, width))   
 img2 = np.zeros((height,width), np.uint8)
 
 meanLib = {}
