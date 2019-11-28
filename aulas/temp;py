@@ -1,0 +1,16 @@
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+PATH = '../db/'
+listimgs = ['rgbcube_kBKG.png', 'baboon.png', 'chips.png']
+imgBGR = cv2.imread('../db/' + listimgs[1], cv2.IMREAD_COLOR)
+b, g, r = cv2.split(imgBGR)
+C = 255 - r
+M = 255 - g
+Y = 255 - b
+K = np.minimum(C,M,Y)
+
+plt.imshow(C, cmap='gray')
+plt.show()
