@@ -1,2 +1,0 @@
-screen = cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
-cv2.imwrite('messigray.png',img)
